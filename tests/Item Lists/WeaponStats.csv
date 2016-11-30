@@ -1,0 +1,18 @@
+Weapon,Damage,Short,Medium,Long,Ammo
+Cestus,1d3,,,,No
+Garrote,1d6,,,,No
+Garotte,1d6,,,,No
+Lance,1d10,,,,No
+Mancatcher,save vs. Paralysis,,,,No
+Polearm,1d8,,,,No
+Rapier,1d8,,,,No
+Spear,1d6,10,20,60,No
+Staff,1d4,,,,No
+Standard Sword,1d8,,,,No
+Short Sword,1d6,,,,No
+Dagger,1d4,10,20,30,No
+2 Daggers,1d4,10,20,30,No
+Mace,1d8,,,,No
+2 Battle Axes,1d8,,,,No
+Shortbow,1d6,50,300,450,Yes
+Short bow,1d6,50,300,450,Yes
