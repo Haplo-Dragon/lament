@@ -2,6 +2,7 @@
 
 import wx
 import wx.lib.inspection
+import random
 
 """
 Hierarchy:
@@ -19,11 +20,17 @@ vertical sizer
         Generate button
 """
 
+quips = ["All these guys are gonna die anyway",
+         "A 1 is good, right?",
+         "HOW many hit points?",
+         "No, I'm sure those spells will be useful",
+         "Don't get too attached",
+         "The last 13 guys? They didn't have what it takes. But you? YOU'VE got the stuff.",
+         "Intelligence 8? This character is just like you!"]
 
-#title_text = "Lament - A random character sheet generator for LotFP (Mockup)"
-title_text = "Lament - Fills PDF sheets with random LotFP characters (Mockup)"
-
-
+# title_text = "Lament - A random character sheet generator for LotFP (Mockup)"
+# title_text = "Lament - Fills PDF sheets with random LotFP characters (Mockup)"
+title_text = "Lament - " + random.choice(quips)
 
 class LamentFrame(wx.Frame):
     def __init__(self, parent=None):
