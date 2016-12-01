@@ -52,13 +52,10 @@ else:
 
 def main():
     app = wx.App()
-    print("App created.")
     GUI.LamentFrame(None)
-    print("Frame created.")
 
     pub.subscribe(lament, "specific.generate")
     pub.subscribe(lament, "random.generate")
-    print("Subscriptions!")
 
     app.MainLoop()
 
@@ -125,7 +122,7 @@ def lament(desired_class=None, number=1):
     subprocess.run(['pdftk', tmpdir.name + '\*.pdf', 'cat', 'output', 'FinalPDF\\' + str(number) + 'Characters.pdf'])
     # print("\nBoom. %s characters, one PDF. Ready to print. You're welcome." % str(number))
     # print("\nP.S. Don't forget the final PDF is A4.")
-    #pub.sendMessage("dialog", title="Done at last!", msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
+    # pub.sendMessage("dialog", title="Done at last!", msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
     #                                                     "\n\nP.S. Don't forget the final PDF is A4." % str(number))
 
 
