@@ -3,6 +3,7 @@
 import wx
 import wx.lib.inspection
 from wx.lib.pubsub import pub
+import wx.adv
 import random
 import threading
 
@@ -152,7 +153,18 @@ class LamentFrame(wx.Frame):
         self.Close()
 
     def onAbout(self, event):
-        pass
+        aboutInfo = wx.adv.AboutDialogInfo()
+        aboutInfo.SetName("Lament")
+        aboutInfo.SetVersion("1.0")
+        aboutInfo.SetDescription("Uses the excellent OSR random character generator at "
+                                 "http://character.totalpartykill.ca/lotfp to fill PDF character sheets "
+                                 "with random characters.")
+        #aboutInfo.SetWebSite("https://github.com/Haplo-Dragon/lament")
+        aboutInfo.SetCopyright("(C) 2016 Ethan Fulbright")
+        aboutInfo.SetDevelopers(["Ethan Fulbright"])
+        #aboutInfo.SetLicense("Open source as fuck.")
+
+        wx.adv.AboutBox(aboutInfo)
 
     def update_dialog(self, title, msg):
         dlg = wx.MessageDialog(self.panel, style=wx.OK, caption=title, message=msg)
@@ -181,10 +193,12 @@ class LamentFrame(wx.Frame):
         pub.sendMessage("specific.generate", desired_class=desired_class, number=number)
         wx.CallAfter(self.progress.Destroy)
         wx.CallAfter(self.specific_generate.Enable)
+        wx.CallAfter(self.class_list.Enable)
         wx.CallAfter(pub.sendMessage, "dialog",
                      title="Done at last!",
                      msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
                          "\n\nP.S. Don't forget the final PDF is A4." % str(number))
+        wx.CallAfter(pub.sendMessage, "status.update", msg="Ready to generate more doomed bastards")
 
     def generateRandom(self, event):
         pub.sendMessage("status.update", msg="Generating %s randos..." % self.number.GetValue())
@@ -202,16 +216,9 @@ class LamentFrame(wx.Frame):
         pub.sendMessage("random.generate", number=int(number))
         wx.CallAfter(self.progress.Destroy)
         wx.CallAfter(self.random_generate.Enable)
+        wx.CallAfter(self.number.Enable)
         wx.CallAfter(pub.sendMessage, "dialog",
                      title="Done at last!",
                      msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
                          "\n\nP.S. Don't forget the final PDF is A4." % str(number))
-
-
-"""
-if __name__ == "__main__":
-    app = wx.App()
-    LamentFrame(None)
-    # wx.lib.inspection.InspectionTool().Show()
-    app.MainLoop()
-"""
+        wx.CallAfter(pub.sendMessage, "status.update", msg="Ready to generate more doomed bastards")
