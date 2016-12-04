@@ -105,7 +105,7 @@ def lament(desired_class=None, number=1):
         # Fill the forms with PDFtk, store them in the tempfiles directory.
         # print("Creating temporary individual filled PDF for ", PC.name)
         pub.sendMessage("status.update", msg="Creating temporary individual filled PDF for %s..." % PC.name)
-        subprocess.run(args, cwd=tmpdir.name)
+        subprocess.run(args, cwd=tmpdir.name, **tools.subprocess_args(False))
 
     try:
         os.mkdir('FinalPDF')
@@ -119,7 +119,8 @@ def lament(desired_class=None, number=1):
     pub.sendMessage("progress.update", msg='Creating ' + 'FinalPDF\\' + str(number) + 'Characters.pdf...', value=99)
     pub.sendMessage("status.update", msg='Creating ' + 'FinalPDF\\' + str(number) + 'Characters.pdf...')
 
-    subprocess.run(['pdftk', tmpdir.name + '\*.pdf', 'cat', 'output', 'FinalPDF\\' + str(number) + 'Characters.pdf'])
+    subprocess.run(['pdftk', tmpdir.name + '\*.pdf', 'cat', 'output', 'FinalPDF\\' + str(number) + 'Characters.pdf'],
+                   **tools.subprocess_args(False))
     # print("\nBoom. %s characters, one PDF. Ready to print. You're welcome." % str(number))
     # print("\nP.S. Don't forget the final PDF is A4.")
     # pub.sendMessage("dialog", title="Done at last!", msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
