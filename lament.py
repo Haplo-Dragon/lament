@@ -78,7 +78,7 @@ def lament(desired_class=None, number=1):
             PC = character.LotFPCharacter(counter=i)
 
         percentage = int(100 * (i - 1) / number)
-        pub.sendMessage("progress.update", msg="Generating %s of %s" % (i, number),
+        pub.sendMessage("progress.update", msg="Generating %s of %s" % (i + 1, number),
                         value=percentage)
 
         # If the character has spells, create a PDF spell sheet and fill it with spells and spell info
@@ -105,6 +105,8 @@ def lament(desired_class=None, number=1):
         # Fill the forms with PDFtk, store them in the tempfiles directory.
         # print("Creating temporary individual filled PDF for ", PC.name)
         pub.sendMessage("status.update", msg="Creating temporary individual filled PDF for %s..." % PC.name)
+        # pub.sendMessage("progress.update", msg="Creating temporary individual filled PDF for %s..." % PC.name,
+        #                value=percentage + .49)
         subprocess.run(args, cwd=tmpdir.name, **tools.subprocess_args(False))
 
     try:

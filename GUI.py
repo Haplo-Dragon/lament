@@ -38,7 +38,7 @@ title_text = "Lament - " + random.choice(quips)
 class LamentFrame(wx.Frame):
     def __init__(self, parent=None, *args, **kwargs):
         wx.Frame.__init__(self, parent,
-                          size=(650, 600),
+                          size=(650, 610),
                           title=title_text,
                           style=wx.DEFAULT_FRAME_STYLE,
                           *args, **kwargs)
@@ -80,7 +80,8 @@ class LamentFrame(wx.Frame):
         clabel_font = wx.Font(wx.FontInfo(11).Italic())
         class_label.SetFont(clabel_font)
 
-        specifics_sizer = wx.StaticBoxSizer(class_label, wx.HORIZONTAL)
+        # specifics_sizer = wx.StaticBoxSizer(class_label, wx.HORIZONTAL)
+        specifics_sizer = wx.StaticBoxSizer(class_label, wx.VERTICAL)
 
         list_font = wx.Font(wx.FontInfo(16).FaceName("IM FELL English PRO"))
         self.class_list.SetFont(list_font)
@@ -93,10 +94,13 @@ class LamentFrame(wx.Frame):
         specifics_sizer.Add(self.class_list,
                             proportion=1,
                             flag=wx.EXPAND | wx.ALL,
-                            border=15)
+                            border=10)
+        # specifics_sizer.Add(self.specific_generate,
+        #                    flag=wx.ALIGN_RIGHT | wx.ALIGN_BOTTOM | wx.ALL,
+        #                    border=15)
         specifics_sizer.Add(self.specific_generate,
-                            flag=wx.ALIGN_RIGHT | wx.ALIGN_BOTTOM | wx.ALL,
-                            border=15)
+                            flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM | wx.ALL,
+                            border=10)
 
         sizer.Add(specifics_sizer,
                   flag=wx.EXPAND | wx.ALL | wx.ALIGN_TOP,
@@ -159,10 +163,10 @@ class LamentFrame(wx.Frame):
         aboutInfo.SetDescription("Uses the excellent OSR random character generator at "
                                  "http://character.totalpartykill.ca/lotfp to fill PDF character sheets "
                                  "with random characters.")
-        #aboutInfo.SetWebSite("https://github.com/Haplo-Dragon/lament")
+        # aboutInfo.SetWebSite("https://github.com/Haplo-Dragon/lament")
         aboutInfo.SetCopyright("(C) 2016 Ethan Fulbright")
         aboutInfo.SetDevelopers(["Ethan Fulbright"])
-        #aboutInfo.SetLicense("Open source as fuck.")
+        # aboutInfo.SetLicense("Open source as fuck.")
 
         wx.adv.AboutBox(aboutInfo)
 
