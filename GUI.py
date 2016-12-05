@@ -38,6 +38,7 @@ class LamentFrame(wx.Frame):
 
         pub.subscribe(self.update_statusbar, "status.update")
         pub.subscribe(self.update_dialog, "dialog")
+        pub.subscribe(self.save_dialog, "save_dialog")
 
         pub.subscribe(self.update_progress, "progress.update")
 
@@ -165,6 +166,22 @@ class LamentFrame(wx.Frame):
     def update_statusbar(self, msg):
         self.statusbar.SetStatusText(msg)
 
+    def save_dialog(self):
+        save_file_dialog = wx.FileDialog(self, "Save final PDF", "",
+                                         str(self.number.GetValue()) + 'Characters.pdf',
+                                         "PDF files (*.pdf)|*.pdf", style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        if save_file_dialog.ShowModal() == wx.ID_CANCEL:
+            return
+
+        tmp_pdf_name = str(self.number.GetValue()) + 'Characters.pdf'
+        save_thread = threading.Thread(target=self.save_work,
+                                       name="final_save",
+                                       kwargs={'final_path': save_file_dialog.GetPath(), 'input_file': tmp_pdf_name})
+        save_thread.start()
+
+    def save_work(self, final_path, input_file):
+        pub.sendMessage("save", final_path=final_path, input_file=input_file)
+
     def generateSpecific(self, event):
         pub.sendMessage("status.update", msg="Generating one %s..." % self.class_list.GetStringSelection())
         self.progress = wx.ProgressDialog(title="Wait for it...", message="Generating characters...")
@@ -183,6 +200,7 @@ class LamentFrame(wx.Frame):
         wx.CallAfter(self.progress.Destroy)
         wx.CallAfter(self.specific_generate.Enable)
         wx.CallAfter(self.class_list.Enable)
+        wx.CallAfter(pub.sendMessage, "save_dialog")
         wx.CallAfter(pub.sendMessage, "dialog",
                      title="Done at last!",
                      msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
@@ -207,6 +225,7 @@ class LamentFrame(wx.Frame):
         wx.CallAfter(self.progress.Destroy)
         wx.CallAfter(self.random_generate.Enable)
         wx.CallAfter(self.number.Enable)
+        wx.CallAfter(pub.sendMessage, "save_dialog")
         wx.CallAfter(pub.sendMessage, "dialog",
                      title="Done at last!",
                      msg="Boom. %s characters, one PDF. Ready to print. You're welcome."

@@ -56,6 +56,7 @@ def main():
 
     pub.subscribe(lament, "specific.generate")
     pub.subscribe(lament, "random.generate")
+    pub.subscribe(final_save, "save")
 
     app.MainLoop()
 
@@ -109,24 +110,36 @@ def lament(desired_class=None, number=1):
         #                value=percentage + .49)
         subprocess.run(args, cwd=tmpdir.name, **tools.subprocess_args(False))
 
+    final_name = 'FinalPDF\\' + str(number) + 'Characters.pdf'
     try:
         os.mkdir('FinalPDF')
     except FileExistsError:
         pass
     # Remove any conflicting final PDFs.
-    if os.path.exists('FinalPDF\\' + str(number) + 'Characters.pdf'):
-        os.remove('FinalPDF\\' + str(number) + 'Characters.pdf')
+    # if os.path.exists('FinalPDF\\' + str(number) + 'Characters.pdf'):
+    #    os.remove('FinalPDF\\' + str(number) + 'Characters.pdf')
+
+    if os.path.exists(final_name):
+        os.remove(final_name)
 
     # print('Creating ', 'FinalPDF\\' + str(number) + 'Characters.pdf', '...')
-    pub.sendMessage("progress.update", msg='Creating ' + 'FinalPDF\\' + str(number) + 'Characters.pdf...', value=99)
-    pub.sendMessage("status.update", msg='Creating ' + 'FinalPDF\\' + str(number) + 'Characters.pdf...')
+    pub.sendMessage("progress.update", msg='Creating ' + final_name, value=99)
+    pub.sendMessage("status.update", msg='Creating ' + final_name + '...')
 
-    subprocess.run(['pdftk', tmpdir.name + '\*.pdf', 'cat', 'output', 'FinalPDF\\' + str(number) + 'Characters.pdf'],
+    subprocess.run(['pdftk', tmpdir.name + '\*.pdf', 'cat', 'output', final_name],
                    **tools.subprocess_args(False))
+
+
     # print("\nBoom. %s characters, one PDF. Ready to print. You're welcome." % str(number))
     # print("\nP.S. Don't forget the final PDF is A4.")
     # pub.sendMessage("dialog", title="Done at last!", msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
     #                                                     "\n\nP.S. Don't forget the final PDF is A4." % str(number))
+
+
+def final_save(final_path='FinalPDF\\', input_file='FinalPDF\\*.pdf'):
+    subprocess.run(
+        ['pdftk', 'FinalPDF\\' + input_file, 'cat', 'output', final_path],
+        **tools.subprocess_args(False))
 
 
 if __name__ == "__main__":
