@@ -22,6 +22,11 @@ def generate_dict(equiplist, type='NonEnc'):
     return equipdict
 
 
+def get_pdftk_path():
+    path_to_pdftk = os.path.join(os.getcwd(), "PDFtk", "bin", "pdftk.exe")
+    return path_to_pdftk
+
+
 def subprocess_args(include_stdout=True):
     """
     Create a set of arguments which make a ``subprocess.Popen`` (and
@@ -309,7 +314,10 @@ def create_spellsheet_pdf(details, name, filename=None, directory=None):
     fdf_spell_data = forge_fdf("", spell_list, [], [], [])
     with open(directory + '\\' + spell_fdf_name, 'wb') as f:
         f.write(fdf_spell_data)
-    args = ['pdftk',
+
+    path_to_pdftk = get_pdftk_path()
+
+    args = [path_to_pdftk,
             '..\LotFPSpellSheetFillable.pdf',
             'fill_form',
             spell_fdf_name,

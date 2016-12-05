@@ -62,9 +62,7 @@ def main():
 
 
 def lament(desired_class=None, number=1):
-    # number = 1
-    # desired_class = None
-
+    path_to_pdftk = tools.get_pdftk_path()
     tmpdir = tempfile.TemporaryDirectory(dir=os.getcwd())
 
     if number > 25:
@@ -95,7 +93,7 @@ def lament(desired_class=None, number=1):
             f.write(fdf_data)
 
         # All of the command-line arguments for PDFtk, since they were getting kinda long.
-        args = ['pdftk',
+        args = [path_to_pdftk,
                 '..\LotFPCharacterSheetLastGaspFillable.pdf',
                 'fill_form',
                 PC.fdf_name,
@@ -115,10 +113,8 @@ def lament(desired_class=None, number=1):
         os.mkdir('FinalPDF')
     except FileExistsError:
         pass
-    # Remove any conflicting final PDFs.
-    # if os.path.exists('FinalPDF\\' + str(number) + 'Characters.pdf'):
-    #    os.remove('FinalPDF\\' + str(number) + 'Characters.pdf')
 
+    # Remove any conflicting final PDFs.
     if os.path.exists(final_name):
         os.remove(final_name)
 
@@ -126,19 +122,15 @@ def lament(desired_class=None, number=1):
     pub.sendMessage("progress.update", msg='Creating ' + final_name, value=99)
     pub.sendMessage("status.update", msg='Creating ' + final_name + '...')
 
-    subprocess.run(['pdftk', tmpdir.name + '\*.pdf', 'cat', 'output', final_name],
+    subprocess.run([path_to_pdftk, tmpdir.name + '\*.pdf', 'cat', 'output', final_name],
                    **tools.subprocess_args(False))
 
 
-    # print("\nBoom. %s characters, one PDF. Ready to print. You're welcome." % str(number))
-    # print("\nP.S. Don't forget the final PDF is A4.")
-    # pub.sendMessage("dialog", title="Done at last!", msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
-    #                                                     "\n\nP.S. Don't forget the final PDF is A4." % str(number))
-
-
 def final_save(final_path='FinalPDF\\', input_file='FinalPDF\\*.pdf'):
+    path_to_pdftk = tools.get_pdftk_path()
+
     subprocess.run(
-        ['pdftk', 'FinalPDF\\' + input_file, 'cat', 'output', final_path],
+        [path_to_pdftk, 'FinalPDF\\' + input_file, 'cat', 'output', final_path],
         **tools.subprocess_args(False))
 
 

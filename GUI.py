@@ -65,7 +65,6 @@ class LamentFrame(wx.Frame):
         clabel_font = wx.Font(wx.FontInfo(11).Italic())
         class_label.SetFont(clabel_font)
 
-        # specifics_sizer = wx.StaticBoxSizer(class_label, wx.HORIZONTAL)
         specifics_sizer = wx.StaticBoxSizer(class_label, wx.VERTICAL)
 
         list_font = wx.Font(wx.FontInfo(16).FaceName("IM FELL English PRO"))
@@ -80,9 +79,7 @@ class LamentFrame(wx.Frame):
                             proportion=1,
                             flag=wx.EXPAND | wx.ALL,
                             border=10)
-        # specifics_sizer.Add(self.specific_generate,
-        #                    flag=wx.ALIGN_RIGHT | wx.ALIGN_BOTTOM | wx.ALL,
-        #                    border=15)
+
         specifics_sizer.Add(self.specific_generate,
                             flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM | wx.ALL,
                             border=10)
@@ -110,7 +107,6 @@ class LamentFrame(wx.Frame):
                    flag=wx.ALL | wx.EXPAND,
                    border=15)
 
-        # random_generate = wx.Button(self.panel, label="HOPE FOR THE BEST")
         rgen_font = wx.Font(wx.FontInfo(15).FaceName("tommy alee"))
         self.random_generate.SetFont(rgen_font)
         self.Bind(wx.EVT_BUTTON, self.generateRandom, self.random_generate)
