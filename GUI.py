@@ -7,22 +7,6 @@ import wx.adv
 import random
 import threading
 
-"""
-Hierarchy:
-
-vertical sizer
-    horizontal sizer for specific classes
-        Static box surrounding the specific class controls
-        Classes list box, double click = generate that class
-        Generate button?
-    vertical sizer for randoms
-        static box surrounding random tools
-        horizontal sizer
-            Label for text control
-            Text control for number of random characters
-        Generate button
-"""
-
 quips = ["All these guys are gonna die anyway",
          "A 1 is good, right?",
          "HOW many hit points?",
@@ -185,8 +169,9 @@ class LamentFrame(wx.Frame):
         pub.sendMessage("status.update", msg="Generating one %s..." % self.class_list.GetStringSelection())
         self.progress = wx.ProgressDialog(title="Wait for it...", message="Generating characters...")
 
-        button = event.GetEventObject()
-        button.Disable()
+        # Disable both specific generation pathways, rather than just the one that was clicked.
+        self.specific_generate.Disable()
+        self.class_list.Disable()
 
         gen_thread = threading.Thread(target=self.lament_specific,
                                       name="specific_gen",
@@ -208,8 +193,9 @@ class LamentFrame(wx.Frame):
         pub.sendMessage("status.update", msg="Generating %s randos..." % self.number.GetValue())
         self.progress = wx.ProgressDialog(title="Wait for it...", message="Generating characters...")
 
-        button = event.GetEventObject()
-        button.Disable()
+        # Disable both random generation pathways, rather than just the one that was clicked.
+        self.random_generate.Disable()
+        self.number.Disable()
 
         gen_thread = threading.Thread(target=self.lament_random,
                                       name="random_gen",
