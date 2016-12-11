@@ -35,7 +35,8 @@ class LamentFrame(wx.Frame):
 
         self.initUI()
         self.statusbar = self.CreateStatusBar()
-        self.config = Configuration()
+        self.config = self.initial_config()
+        pub.subscribe(self.config_listener, "options")
 
         pub.subscribe(self.update_statusbar, "status.update")
         pub.subscribe(self.update_dialog, "dialog")
@@ -158,8 +159,15 @@ class LamentFrame(wx.Frame):
 
         wx.adv.AboutBox(aboutInfo)
 
+    def initial_config(self):
+        config = {'encum': True}
+        return config
+
+    def config_listener(self, key, data):
+        self.config[key] = data
+
     def onEncumbrance(self, event):
-        pub.sendMessage("options", want_encumbrance=self.encum_item.IsChecked())
+        pub.sendMessage("options", key='encum', data=self.encum_item.IsChecked())
 
     def update_dialog(self, title, msg):
         dlg = wx.MessageDialog(self.panel, style=wx.OK, caption=title, message=msg)
@@ -200,7 +208,7 @@ class LamentFrame(wx.Frame):
                                       name="specific_gen",
                                       kwargs={'desired_class': self.class_list.GetStringSelection(),
                                               'number': 1,
-                                              'calculate_encumbrance': self.config.encumbrance})
+                                              'calculate_encumbrance': self.config['encum']})
         gen_thread.start()
 
     def lament_specific(self, desired_class, number, calculate_encumbrance):
@@ -229,7 +237,7 @@ class LamentFrame(wx.Frame):
         gen_thread = threading.Thread(target=self.lament_random,
                                       name="random_gen",
                                       kwargs={'number': self.number.GetValue(),
-                                              'calculate_encumbrance': self.config.encumbrance})
+                                              'calculate_encumbrance': self.config['encum']})
         gen_thread.start()
 
     def lament_random(self, number, calculate_encumbrance):
@@ -245,6 +253,7 @@ class LamentFrame(wx.Frame):
         wx.CallAfter(pub.sendMessage, "status.update", msg="Ready to generate more doomed bastards")
 
 
+"""
 class Configuration(object):
     def __init__(self):
         self.encumbrance = True
@@ -253,3 +262,4 @@ class Configuration(object):
 
     def encumbrance_listener(self, want_encumbrance=True):
         self.encumbrance = want_encumbrance
+"""
