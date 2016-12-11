@@ -3,7 +3,7 @@ import random
 
 
 class LotFPCharacter(object):
-    def __init__(self, desired_class=None, counter=1):
+    def __init__(self, desired_class=None, calculate_encumbrance=True, counter=1):
         self.details = tools.fetch_character(desired_class)
         self.counter = counter
         self.pcClass = self.details['class']
@@ -19,7 +19,8 @@ class LotFPCharacter(object):
         self.saves = self.get_saves(self.pcClass, self.mods)
         self.skills = self.get_skills(self.details['skills'], self.mods)
 
-        self.equipment = tools.format_equipment_list(self.details)
+        self.calculate_encumbrance = calculate_encumbrance
+        self.equipment = tools.format_equipment_list(self.details, self.calculate_encumbrance)
         self.attacks = self.calculate_attack_bonuses(self.mods, self.pcClass)
         self.AC = self.calculate_armor_classes(self.mods, self.equipment, self.details['ac'])
 

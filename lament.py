@@ -61,7 +61,7 @@ def main():
     app.MainLoop()
 
 
-def lament(desired_class=None, number=1):
+def lament(desired_class=None, number=1, calculate_encumbrance=True):
     path_to_pdftk = tools.get_pdftk_path()
     tmpdir = tempfile.TemporaryDirectory(dir=os.getcwd())
 
@@ -72,9 +72,12 @@ def lament(desired_class=None, number=1):
 
     for i in range(number):
         if desired_class:
-            PC = character.LotFPCharacter(desired_class, counter=i)
+            PC = character.LotFPCharacter(desired_class,
+                                          calculate_encumbrance=calculate_encumbrance,
+                                          counter=i)
         else:
-            PC = character.LotFPCharacter(counter=i)
+            PC = character.LotFPCharacter(calculate_encumbrance=calculate_encumbrance,
+                                          counter=i)
 
         percentage = int(100 * (i - 1) / number)
         pub.sendMessage("progress.update", msg="Generating %s of %s" % (i + 1, number),

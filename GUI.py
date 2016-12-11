@@ -35,6 +35,7 @@ class LamentFrame(wx.Frame):
 
         self.initUI()
         self.statusbar = self.CreateStatusBar()
+        self.config = Configuration()
 
         pub.subscribe(self.update_statusbar, "status.update")
         pub.subscribe(self.update_dialog, "dialog")
@@ -48,11 +49,17 @@ class LamentFrame(wx.Frame):
     def initUI(self):
         menubar = wx.MenuBar()
         file_menu = wx.Menu()
+        options_menu = wx.Menu()
         about_menu = wx.Menu()
 
         quit_item = file_menu.Append(wx.ID_EXIT, '&Quit\tAlt+F4', 'Close Lament')
         self.Bind(wx.EVT_MENU, self.onClose, quit_item)
         menubar.Append(file_menu, '&File')
+
+        self.encum_item = options_menu.AppendCheckItem(wx.ID_ANY, '&Encumbrance', 'Calculate encumbrance')
+        self.encum_item.Check()
+        self.Bind(wx.EVT_MENU, self.onEncumbrance, self.encum_item)
+        menubar.Append(options_menu, '&Options')
 
         about_item = about_menu.Append(wx.ID_ABOUT, '&About', 'Self-aggrandizement')
         self.Bind(wx.EVT_MENU, self.onAbout, about_item)
@@ -151,6 +158,9 @@ class LamentFrame(wx.Frame):
 
         wx.adv.AboutBox(aboutInfo)
 
+    def onEncumbrance(self, event):
+        pub.sendMessage("options", want_encumbrance=self.encum_item.IsChecked())
+
     def update_dialog(self, title, msg):
         dlg = wx.MessageDialog(self.panel, style=wx.OK, caption=title, message=msg)
         dlg.ShowModal()
@@ -188,11 +198,16 @@ class LamentFrame(wx.Frame):
 
         gen_thread = threading.Thread(target=self.lament_specific,
                                       name="specific_gen",
-                                      kwargs={'desired_class': self.class_list.GetStringSelection(), 'number': 1})
+                                      kwargs={'desired_class': self.class_list.GetStringSelection(),
+                                              'number': 1,
+                                              'calculate_encumbrance': self.config.encumbrance})
         gen_thread.start()
 
-    def lament_specific(self, desired_class, number):
-        pub.sendMessage("specific.generate", desired_class=desired_class, number=number)
+    def lament_specific(self, desired_class, number, calculate_encumbrance):
+        pub.sendMessage("specific.generate", desired_class=desired_class,
+                        number=number,
+                        calculate_encumbrance=calculate_encumbrance)
+
         wx.CallAfter(self.progress.Destroy)
         wx.CallAfter(self.specific_generate.Enable)
         wx.CallAfter(self.class_list.Enable)
@@ -213,11 +228,12 @@ class LamentFrame(wx.Frame):
 
         gen_thread = threading.Thread(target=self.lament_random,
                                       name="random_gen",
-                                      kwargs={'number': self.number.GetValue()})
+                                      kwargs={'number': self.number.GetValue(),
+                                              'calculate_encumbrance': self.config.encumbrance})
         gen_thread.start()
 
-    def lament_random(self, number):
-        pub.sendMessage("random.generate", number=int(number))
+    def lament_random(self, number, calculate_encumbrance):
+        pub.sendMessage("random.generate", number=int(number), calculate_encumbrance=calculate_encumbrance)
         wx.CallAfter(self.progress.Destroy)
         wx.CallAfter(self.random_generate.Enable)
         wx.CallAfter(self.number.Enable)
@@ -227,3 +243,13 @@ class LamentFrame(wx.Frame):
                      msg="Boom. %s characters, one PDF. Ready to print. You're welcome."
                          "\n\nP.S. Don't forget the final PDF is A4." % str(number))
         wx.CallAfter(pub.sendMessage, "status.update", msg="Ready to generate more doomed bastards")
+
+
+class Configuration(object):
+    def __init__(self):
+        self.encumbrance = True
+
+        pub.subscribe(self.encumbrance_listener, "options")
+
+    def encumbrance_listener(self, want_encumbrance=True):
+        self.encumbrance = want_encumbrance

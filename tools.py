@@ -107,7 +107,7 @@ def fetch_character(pc_class=None):
         return details
 
 
-def format_equipment_list(details):
+def format_equipment_list(details, calculate_encumbrance=True):
     """
     Splits the huge, unsorted equipment list provided by the remote generator into logical bits.
         Duplicates the weapons and their statistics to fill the weapons table on the character sheet.
@@ -131,7 +131,10 @@ def format_equipment_list(details):
     # Generate dictionary version of the normal equipment list
     normal_equipment = generate_dict(equipment, 'Normal')
 
-    encumbrance = {'Encumbrance': calculate_encumbrance(normal_equipment, details['class'])}
+    if calculate_encumbrance:
+        encumbrance = {'Encumbrance': get_encumbrance(normal_equipment, details['class'])}
+    else:
+        encumbrance = {'Encumbrance': ""}
 
     # Create a combined equipment list
     comb_equipment = combine_dicts(nonenc_equipment, over_equipment)
@@ -194,7 +197,7 @@ def split_money(target):
     return (target, money)
 
 
-def calculate_encumbrance(normal_item_dict, pc_class):
+def get_encumbrance(normal_item_dict, pc_class):
     # Set encumbrance from normal (that is, encumbering) items carried
     encumbrance = int(len(normal_item_dict) / 5.1)
 
