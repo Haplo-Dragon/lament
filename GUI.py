@@ -147,7 +147,7 @@ class LamentFrame(wx.Frame):
     def onAbout(self, event):
         aboutInfo = wx.adv.AboutDialogInfo()
         aboutInfo.SetName("Lament")
-        aboutInfo.SetVersion("1.0")
+        aboutInfo.SetVersion("1.1")
         aboutInfo.SetDescription("Uses the excellent OSR random character generator at "
                                  "http://character.totalpartykill.ca/lotfp to fill PDF character sheets "
                                  "with random characters.")
