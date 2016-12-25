@@ -1,0 +1,27 @@
+body {
+	background: #eee;
+}
+
+#container {
+	width: 25em;
+	margin: 0 auto;
+	padding: 2em 0;
+}
+
+h1 {
+	font-size: 2em;
+	font-family: 'Crimson Text', serif;
+}
+
+.specificclass {
+	margin: 0 auto;
+	text-align: left;
+	font-size: 1.2em;
+	font-family: 'Calligraffitti', cursive;
+	float: left;
+}
+
+#specific_generate {
+	margin: 0 auto;
+}
+
