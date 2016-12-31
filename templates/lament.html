@@ -2,25 +2,47 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lament</title>
     <link rel="stylesheet" type="text/css" href="../static/lament.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Calligraffitti|Crimson+Text">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Crimson+Text|Nixie+One">
 </head>
+
 <body>
-<div id="container">
+<div id="specific">
     <h1>Generate a specific class</h1>
-    <div id="class_list" class="specificclass">
-    <input type="radio" class="specificclass" name="desired_class" value="Cleric" checked>Cleric<br>
-    <input type="radio" class="specificclass" name="desired_class" value="Fighter">Fighter<br>
-    <input type="radio" class="specificclass" name="desired_class" value="Magic-User">Magic-User<br>
-    <input type="radio" class="specificclass" name="desired_class" value="Dwarf">Dwarf<br>
-    <input type="radio" class="specificclass" name="desired_class" value="Elf">Elf<br>
-    <input type="radio" class="specificclass" name="desired_class" value="Halfling">Halfling<br>
-    <input type="button" id="specific_generate" value="Generate">
-    </div>
+</div>
+<div id="classlist">
+    <input type="button" class="specificclass" name="desired_class" value="Cleric">
+    <input type="button" class="specificclass" name="desired_class" value="Fighter">
+    <input type="button" class="specificclass" name="desired_class" value="Magic-User">
+    <input type="button" class="specificclass" name="desired_class" value="Dwarf">
+    <input type="button" class="specificclass" name="desired_class" value="Elf">
+    <input type="button" class="specificclass" name="desired_class" value="Halfling">
+</div>
+<h1>Generate random characters</h1>
+<div id="random">
+    <input type="text" class="random_number" autofocus="autofocus" placeholder="How many randos?">
+</div>
+<div id="sass">
+    {{sass}}
 </div>
 
+<footer>
+    <p>
+        Uses this <a href="http://character.totalpartykill.ca/lotfp">excellent random OSR character generator</a>
+        to fill PDF character sheets with random characters.
+        The character generator was created by <a href="https://github.com/funkaoshi/randomcharacter">funkaoshi.</a>
+    </p>
+    <p>
+        Intended for <a href="http://www.lotfp.com">Lamentations of the Flame Princess.</a>
+    </p>
+    <p>
+        This tool uses the (frankly amazing) character sheets created by <a href="http://www.lastgaspgrimoire.com/penny-pamphlets/">Last Gasp Grimoire</a>
+        Really, though, <a href="http://www.lastgaspgrimoire.com">their entire site</a> is a revelation unto the unworthy.
+    </p>
 
+</footer>
 </body>
 
 </html>

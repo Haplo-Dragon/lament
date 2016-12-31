@@ -1,27 +1,72 @@
 body {
-	background: #eee;
-}
-
-#container {
-	width: 25em;
-	margin: 0 auto;
-	padding: 2em 0;
+	background: #4e0110;
+	zoom: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    font-smoothing: antialiased;
 }
 
 h1 {
-	font-size: 2em;
-	font-family: 'Crimson Text', serif;
+	font-size: 2.5em;
+	font-family: 'Nixie One', serif;
+	color: #ece2d0;
+	text-align: center;
+	margin: .5em auto;
+	display: block;
 }
 
 .specificclass {
-	margin: 0 auto;
-	text-align: left;
-	font-size: 1.2em;
-	font-family: 'Calligraffitti', cursive;
-	float: left;
+	background-color: #9b1d20;
+	border: none;
+	width: 9em;
+	margin: .2em auto;
+	display: block;
+	text-align: center;
+	font-size: 2em;
+	font-family: 'Crimson Text', cursive;
+	color: white;
+	padding: .4em 1em;
+    text-decoration: none;
+    border-radius: .5em;
 }
 
-#specific_generate {
-	margin: 0 auto;
+.specificclass:hover {
+    box-shadow: 0 .2em .2em 0 rgba(0,0,0,.6), 0 .4em 1.2em 0 rgba(0,0,0,.5);*/
 }
 
+input[type=text] {
+    background-color: #4e0110;
+    border: .2em solid #9b1d20;
+    border-radius: .5em;
+    width: 12em;
+    margin: .2em auto;
+    display: block;
+    text-align: center;
+    font-size: 2em;
+    font-family: 'Crimson Text', cursive;
+    color: white;
+}
+
+#sass {
+    font-size: 1em;
+    color: #ece2d0;
+    text-align: center;
+    padding-top: .5em;
+}
+
+footer {
+    clear: both;
+    padding-top: 1em;
+}
+
+footer p:first-child {
+    border-top: .2em solid #9b1d20;
+    padding-top: 1em;
+}
+
+footer p {
+    font-size: .9em;
+    line-height: 120%;
+    text-align: center;
+    color: #ece2d0;
+}
