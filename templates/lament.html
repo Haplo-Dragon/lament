@@ -13,17 +13,31 @@
     <h1>Generate a specific class</h1>
 </div>
 <div id="classlist">
-    <input type="button" class="specificclass" name="desired_class" value="Cleric">
-    <input type="button" class="specificclass" name="desired_class" value="Fighter">
-    <input type="button" class="specificclass" name="desired_class" value="Magic-User">
-    <input type="button" class="specificclass" name="desired_class" value="Dwarf">
-    <input type="button" class="specificclass" name="desired_class" value="Elf">
-    <input type="button" class="specificclass" name="desired_class" value="Halfling">
+    <form class="specific" method="POST" action={{url_for('lament')}}>
+        <input type="submit" class="specificclass" name="desired_class" value="Cleric">
+        <input type="submit" class="specificclass" name="desired_class" value="Fighter">
+        <input type="submit" class="specificclass" name="desired_class" value="Magic-User">
+        <input type="submit" class="specificclass" name="desired_class" value="Dwarf">
+        <input type="submit" class="specificclass" name="desired_class" value="Elf">
+        <input type="submit" class="specificclass" name="desired_class" value="Halfling">
+    </form>
+
 </div>
 <h1>Generate random characters</h1>
 <div id="random">
-    <input type="text" class="random_number" autofocus="autofocus" placeholder="How many randos?">
+    <form class="random" method="POST" action=" {{ url_for('lament') }} ">
+        <input type="text" name="randos" class="random_number" autofocus="autofocus" placeholder="How many randos?">
+        {% if get_flashed_messages() %}
+            <div class="flash">
+                {% for message in get_flashed_messages() %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <input type="submit" class="random_generate" name="random_characters" value="HOPE FOR THE BEST">
+    </form>
 </div>
+
 <div id="sass">
     {{sass}}
 </div>
@@ -38,8 +52,10 @@
         Intended for <a href="http://www.lotfp.com">Lamentations of the Flame Princess.</a>
     </p>
     <p>
-        This tool uses the (frankly amazing) character sheets created by <a href="http://www.lastgaspgrimoire.com/penny-pamphlets/">Last Gasp Grimoire</a>
-        Really, though, <a href="http://www.lastgaspgrimoire.com">their entire site</a> is a revelation unto the unworthy.
+        This tool uses the (frankly amazing) character sheets created by <a
+            href="http://www.lastgaspgrimoire.com/penny-pamphlets/">Last Gasp Grimoire</a>
+        Really, though, <a href="http://www.lastgaspgrimoire.com">their entire site</a> is a revelation unto the
+        unworthy.
     </p>
 
 </footer>

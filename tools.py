@@ -88,7 +88,7 @@ def fetch_character(pc_class=None):
             while details['class'] != pc_class:
                 try:
                     # print("This is try #", i)
-                    r = requests.get("http://character.totalpartykill.ca/lotfp/json", timeout=5)
+                    r = requests.get("http://character.totalpartykill.ca/lotfp/json", timeout=10)
                     details = r.json()
                     i += 1
                 except ConnectionError as e:
@@ -98,7 +98,7 @@ def fetch_character(pc_class=None):
 
         else:
             try:
-                r = requests.get("http://character.totalpartykill.ca/lotfp/json", timeout=5)
+                r = requests.get("http://character.totalpartykill.ca/lotfp/json", timeout=10)
                 details = r.json()
             except ConnectionError as e:
                 print("There was a connection error: %s" % e)

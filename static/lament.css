@@ -31,14 +31,14 @@ h1 {
 }
 
 .specificclass:hover {
-    box-shadow: 0 .2em .2em 0 rgba(0,0,0,.6), 0 .4em 1.2em 0 rgba(0,0,0,.5);*/
+    box-shadow: 0 .2em .2em 0 rgba(0,0,0,.6), 0 .4em 1.2em 0 rgba(0,0,0,.5);
 }
 
 input[type=text] {
     background-color: #4e0110;
     border: .2em solid #9b1d20;
     border-radius: .5em;
-    width: 12em;
+    width: 9.5em;
     margin: .2em auto;
     display: block;
     text-align: center;
@@ -47,11 +47,33 @@ input[type=text] {
     color: white;
 }
 
-#sass {
+.random_generate {
+    background-color: #9b1d20;
+	border: none;
+	width: 11em;
+	margin: .2em auto;
+	display: block;
+	text-align: center;
+	font-size: 1.5em;
+	font-family: 'Crimson Text', cursive;
+	color: white;
+	padding: .4em 1em;
+    text-decoration: none;
+    border-radius: .5em;
+}
+
+#sass, .progress_message {
     font-size: 1em;
     color: #ece2d0;
     text-align: center;
     padding-top: .5em;
+}
+
+.flash {
+    font-size: 2em;
+    color: #ece2d0;
+    text-align: center;
+    padding: .5em;
 }
 
 footer {
@@ -69,4 +91,37 @@ footer p {
     line-height: 120%;
     text-align: center;
     color: #ece2d0;
+}
+
+progress[value] {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+
+    /* Get rid of default border in Firefox. */
+    border: none;
+    color: #ece2d0;
+    background-color: #ece2d0;
+    border-radius: 1em;
+    box-shadow: 0 .4em .4em 0 rgba(0,0,0,.6), 0 .6em 1.6em 0 rgba(0,0,0,.5);
+
+    /* Dimensions */
+    width: 70%;
+    height: 2em;
+    margin: 3em auto;
+    align: center;
+    display: block;
+}
+
+progress[value]::-moz-progress-bar {
+    border: none;
+    color: #9b1d20;
+    background-color: #9b1d20;
+    border-radius: 1em;
+    width: 70%;
+    height: 2em;
+    margin: 0 auto;
+    align: center;
+    display: block;
 }
