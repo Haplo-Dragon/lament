@@ -28,9 +28,10 @@ h1 {
 	padding: .4em 1em;
     text-decoration: none;
     border-radius: .5em;
+    transition: 0.5s;
 }
 
-.specificclass:hover {
+.specificclass:hover, .random_generate:hover {
     box-shadow: 0 .2em .2em 0 rgba(0,0,0,.6), 0 .4em 1.2em 0 rgba(0,0,0,.5);
 }
 
@@ -60,6 +61,7 @@ input[type=text] {
 	padding: .4em 1em;
     text-decoration: none;
     border-radius: .5em;
+    transition: .5s;
 }
 
 #sass, .progress_message {

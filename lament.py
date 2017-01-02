@@ -19,15 +19,15 @@ SASS = ["All these guys are gonna die anyway",
         "Intelligence 8? This character is just like you!",
         "Old age looked boring anyway"]
 
-DEBUG = True
+# DEBUG = True
 app = Flask(__name__)
 
 
 def main():
     app.config.from_object(__name__)
-    app.DEBUG = True
+    # app.DEBUG = True
     app.secret_key = 'Top secret lurvs for the Moxxi'
-    app.run("0.0.0.0")
+    app.run(host="0.0.0.0", port=42000)
 
 
 @app.route('/')
@@ -52,22 +52,31 @@ def lament(desired_class=None, number=1, calculate_encumbrance=True):
         if "desired_class" in request.form.keys():
             desired_class = request.form['desired_class']
         if "randos" in request.form.keys():
+            number = request.form['randos']
             try:
-                number = int(request.form['randos'])
+                number = int(number)
             except TypeError:
                 flash("%s? Really?!" % number)
                 return redirect(url_for('index'))
             except ValueError:
-                flash("Put some NUMBERS in there, you degenerate.")
+                message = "Put some NUMBERS in there, you degenerate."
+                if number in ('lurvs', 'Lurvs'):
+                    message = "I love you with all my heart, Moxxi. Even in code. Forever and always."
+                flash(message)
                 return redirect(url_for('index'))
 
             if number <= 0:
-                flash("Really. You'd like NEGATIVE %s characters. Uh huh. Lemme get right on that." % abs(number))
+                if number < 0:
+                    message = "Really. You'd like NEGATIVE %s characters. Uh huh. Lemme get right on that." \
+                              % abs(number)
+                else:
+                    message = "There you go! I generated NO characters for you, just like you asked."
+                flash(message)
                 return redirect(url_for('index'))
 
     if number > 25:
-        flash("REALLY? %s? You're getting 25, meatbag." % number)
-        number = 25
+        # flash("REALLY? %s? You're getting one, meatbag. ONE." % number)
+        number = 1
 
     for i in range(number):
         if desired_class:
@@ -78,7 +87,7 @@ def lament(desired_class=None, number=1, calculate_encumbrance=True):
             PC = character.LotFPCharacter(calculate_encumbrance=calculate_encumbrance,
                                           counter=i)
 
-        percentage = int(100 * (i - 1) / number)
+        # percentage = int(100 * (i - 1) / number)
 
         # If the character has spells, create a PDF spell sheet and fill it with spells and spell info
         if PC.pcClass in ['Cleric', 'Magic-User', 'Elf']:
@@ -119,6 +128,7 @@ def lament(desired_class=None, number=1, calculate_encumbrance=True):
                    **tools.subprocess_args(False))
 
     return send_file(final_name, mimetype="application/pdf", as_attachment=True)
+
 
 """
 @app.route('/progress')
