@@ -1,20 +1,25 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lament</title>
-    <link rel="stylesheet" type="text/css" href="../static/lament.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Crimson+Text|Nixie+One">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %} Generating a new batch of doomed bastards... {% endblock %}
+
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+        $( document ).ready(function() {
+            var $progress = 1;
+
+            if (progress == 100) {
+                location.replace("http://lament.strangled.net:42000");
+            }
+        });
+    </script>
+{%endblock %}
+
+{% block content %}
     <div id="progess">
-        <progress value="10" max="100"></progress>
+        <progress id="bar" value="1" max="100"></progress>
     </div>
     <div id="message">
-        <p class="progress_message">
-            {{ message }}
-        </p>
+        <p class="progress_message"></p>
     </div>
-</body>
-</html>
+
+{% endblock %}

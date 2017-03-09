@@ -87,7 +87,9 @@ def fetch_character(pc_class=None):
         if pc_class:
             while details['class'] != pc_class:
                 try:
-                    # print("This is try #", i)
+                    #if i % 5 == 0:
+                    #    progress(message="Wow, it's taking a while to get the right class. This is try #%s..."
+                    #                           %i)
                     r = requests.get("http://character.totalpartykill.ca/lotfp/json", timeout=10)
                     details = r.json()
                     i += 1

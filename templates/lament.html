@@ -1,19 +1,26 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lament</title>
-    <link rel="stylesheet" type="text/css" href="../static/lament.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Crimson+Text|Nixie+One">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %} {{sass}} {% endblock %}
+
+{%block content %}
+
+<div class="modal-background">
+
+        <div id="progress">
+            <progress id="bar" value="5" max="100"></progress>
+        </div>
+        <div id="message">
+            <p id="p_message" class="progress_message"></p>
+        </div>
+
+</div>
+
 <div id="specific">
     <h1>Generate a specific class</h1>
 </div>
+
 <div id="classlist">
-    <form class="specific" method="POST" action={{url_for('lament')}}>
+    <form id="specific-classes" class="specific" method="POST" action="{{ url_for('lament') }}">
         <input type="submit" class="specificclass" name="desired_class" value="Cleric">
         <input type="submit" class="specificclass" name="desired_class" value="Fighter">
         <input type="submit" class="specificclass" name="desired_class" value="Magic-User">
@@ -25,8 +32,8 @@
 </div>
 <h1>Generate random characters</h1>
 <div id="random">
-    <form class="random" method="POST" action=" {{ url_for('lament') }} ">
-        <input type="text" name="randos" class="random_number" autofocus="autofocus" placeholder="How many randos?">
+    <form id="random-classes" class="random" method="POST" action="{{ url_for('lament') }}">
+        <input type="text" id="randos" name="randos" autofocus="autofocus" placeholder="How many randos?">
         {% if get_flashed_messages() %}
             <div class="flash">
                 {% for message in get_flashed_messages() %}
@@ -41,24 +48,4 @@
 <div id="sass">
     {{sass}}
 </div>
-
-<footer>
-    <p>
-        Uses this <a href="http://character.totalpartykill.ca/lotfp">excellent random OSR character generator</a>
-        to fill PDF character sheets with random characters.
-        The character generator was created by <a href="https://github.com/funkaoshi/randomcharacter">funkaoshi.</a>
-    </p>
-    <p>
-        Intended for <a href="http://www.lotfp.com">Lamentations of the Flame Princess.</a>
-    </p>
-    <p>
-        This tool uses the (frankly amazing) character sheets created by <a
-            href="http://www.lastgaspgrimoire.com/penny-pamphlets/">Last Gasp Grimoire</a>
-        Really, though, <a href="http://www.lastgaspgrimoire.com">their entire site</a> is a revelation unto the
-        unworthy.
-    </p>
-
-</footer>
-</body>
-
-</html>
+{% endblock %}

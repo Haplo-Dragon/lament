@@ -120,14 +120,14 @@ class LotFPCharacter(object):
 
     def get_skills(self, skill_list, mods):
         skills = {item[0]: item[1] for item in skill_list}
-        # Correct for misspelling of Architecture in Dwarf listings (at least until the website's code
-        # is updated from Github)
+        """ Correct for misspelling of Architecture in Dwarf listings (at least until the website's code
+            is updated from Github)
         if 'Architeure' in skills.keys():
             skills['Architecture'] = skills['Architeure']
             del skills['Architeure']
         # Add character's INT modifier to their language skill chance, at least until that bug is fixed.
         skills['Languages'] = max(int(skills['Languages']) + int(mods['INTmod']), 0)
-
+        """
         return skills
 
     def calculate_attack_bonuses(self, mods, pcClass=None):

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> {% block title %}{% endblock %} - Lament </title>
+
+    <link rel="stylesheet" type="text/css" href="../static/lament.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Crimson+Text|Nixie+One">
+
+    {% block scripts %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.min.js"></script>
+        <!-- <script src = "static/progress.js"></script> !-->
+    {% endblock %}
+
+</head>
+
+<body>
+<div id="content">
+    {% block content %} {%endblock%}
+</div>
+</body>
+
+<div id="footer">
+    <footer>
+    <p>
+        Uses this <a href="http://character.totalpartykill.ca/lotfp">excellent random OSR character generator</a>
+        to fill PDF character sheets with random characters.
+        The character generator was created by <a href="https://github.com/funkaoshi/randomcharacter">funkaoshi.</a>
+    </p>
+    <p>
+        Intended for <a href="http://www.lotfp.com">Lamentations of the Flame Princess.</a>
+    </p>
+    <p>
+        This tool uses the (frankly amazing) character sheets created by <a
+            href="http://www.lastgaspgrimoire.com/penny-pamphlets/">Last Gasp Grimoire</a>
+        Really, though, <a href="http://www.lastgaspgrimoire.com">their entire site</a> is a revelation unto the
+        unworthy.
+    </p>
+    <p>
+        This site designed and maintained by Ethan Fulbright.
+    </p>
+</footer>
+</div>
+</html>
