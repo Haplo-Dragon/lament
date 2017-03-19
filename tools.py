@@ -87,7 +87,7 @@ def fetch_character(pc_class=None):
         if pc_class:
             while details['class'] != pc_class:
                 try:
-                    #if i % 5 == 0:
+                    # if i % 5 == 0:
                     #    progress(message="Wow, it's taking a while to get the right class. This is try #%s..."
                     #                           %i)
                     r = requests.get("http://character.totalpartykill.ca/lotfp/json", timeout=10)
@@ -134,7 +134,7 @@ def format_equipment_list(details, calculate_encumbrance=True):
     normal_equipment = generate_dict(equipment, 'Normal')
 
     if calculate_encumbrance:
-        encumbrance = {'Encumbrance': get_encumbrance(normal_equipment, details['class'])}
+        encumbrance = {'Encumbrance': get_encumbrance(normal_equipment, over_equipment, details['class'])}
     else:
         encumbrance = {'Encumbrance': ""}
 
@@ -199,7 +199,7 @@ def split_money(target):
     return (target, money)
 
 
-def get_encumbrance(normal_item_dict, pc_class):
+def get_encumbrance(normal_item_dict, oversized_item_dict, pc_class):
     # Set encumbrance from normal (that is, encumbering) items carried
     encumbrance = int(len(normal_item_dict) / 5.1)
 
@@ -209,9 +209,16 @@ def get_encumbrance(normal_item_dict, pc_class):
     if 'Plate Armor' in normal_item_dict.values():
         encumbrance += 2
 
+    # Check for oversized items (shields, polearms, etc.). Each oversized item adds an encumbrance point.
+    encumbrance += len(oversized_item_dict)
+
     # Dwarves can carry more, so their first point of encumbrance doesn't count.
     if pc_class == 'Dwarf':
         encumbrance -= 1
+
+    # Make sure encumbrance isn't negative. Wouldn't want characters floating away into the sky.
+    if encumbrance < 0:
+        encumbrance = 0
 
     return encumbrance
 
