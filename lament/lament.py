@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from flask import request, send_file, render_template, flash, url_for, redirect, Flask
+from flask import request, send_file, render_template, flash, url_for, redirect, Flask, Blueprint
 
 import character
 import tools
@@ -10,8 +10,7 @@ import os
 import tempfile
 import random
 
-SASS = ["All these guys are gonna die anyway",
-        "A 1 is good, right?",
+SASS = ["All these guys are gonna die anyway",lament"A 1 is good, right?",
         "HOW many hit points?",
         "No, I'm sure those spells will be useful",
         "Don't get too attached",
@@ -20,28 +19,29 @@ SASS = ["All these guys are gonna die anyway",
         "Old age looked boring anyway"]
 
 # DEBUG = True
-THREADED = True
-app = Flask(__name__)
-app.config.from_object(__name__)
+# THREADED = True
+# app = Flask(__name__)
+# app.config.from_object(__name__)
 # app.DEBUG = True
-app.secret_key = 'Top secret lurvs for the Moxxi'
+# app.secret_key = 'Top secret lurvs for the Moxxi'
 # app.run(host="0.0.0.0", port=42000, threaded=True)
+lament = Blueprint('lament', __name__, subdomain="lament")
 
 
-@app.route('/')
-@app.route('/index')
+@lament.route('/')
+@lament.route('/index')
 def index():
     return render_template('lament.html', sass=random.choice(SASS))
 
 
-@app.after_request
+@lament.after_request
 def gnu_terry_pratchett(resp):
     resp.headers.add("X-Clacks-Overhead", "GNU Terry Pratchett")
     return resp
 
 
 # def lament(desired_class=None, number=1, calculate_encumbrance=True):
-@app.route('/lament', methods=['GET', 'POST'])
+@lament.route('/lament', methods=['GET', 'POST'])
 def lament():
     path_to_pdftk = tools.get_pdftk_path()
     tmpdir = tempfile.TemporaryDirectory(dir=os.getcwd())
@@ -126,7 +126,3 @@ def lament():
 
     print("Returning %s." % final_name)
     return send_file(final_name, mimetype="application/pdf", as_attachment=True)
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=42000, threaded=True)
