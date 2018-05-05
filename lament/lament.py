@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 from flask import request, send_file, render_template, flash, url_for, redirect, Flask
-from flask_socketio import SocketIO, emit
 
 import character
 import tools
