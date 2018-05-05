@@ -3,7 +3,10 @@ import random
 
 
 class LotFPCharacter(object):
-    def __init__(self, desired_class=None, calculate_encumbrance=True, counter=1):
+    def __init__(self, 
+                desired_class=None, 
+                calculate_encumbrance=True, 
+                counter=1):
         self.details = tools.fetch_character(desired_class)
         self.counter = counter
         self.pcClass = self.details['class']
@@ -24,15 +27,23 @@ class LotFPCharacter(object):
         self.attacks = self.calculate_attack_bonuses(self.mods, self.pcClass)
         self.AC = self.calculate_armor_classes(self.mods, self.equipment, self.details['ac'])
 
-        # Lots of the entries in the original character details have been reformatted, so we'll remove them.
-        entries_to_reformat = ['attributes', 'attr', 'skills', 'equipment', 'saves', 'ac']
+        # Lots of the entries in the original character details have
+        # been reformatted, so we'll remove them.
+        entries_to_reformat = ['attributes', 
+                                'attr', 
+                                'skills', 
+                                'equipment', 
+                                'saves', 
+                                'ac']
         for item in entries_to_reformat:
             del self.details[item]
 
-        # Nobody wants to see zeroes in their attribute modifiers. If it's zero, we'll just leave it blank.
+        # Nobody wants to see zeroes in their attribute modifiers.
+        # If it's zero, we'll just leave it blank.
         self.mods = tools.clear_mod_zeroes(self.mods)
 
-        # We've gotta replace the removed character detail entries with our nice reformatted ones.
+        # We've gotta replace the removed character detail entries
+        # with our nice reformatted ones.
         reformatted = [self.attributes, self.mods, self.saves, self.skills, self.equipment, self.attacks, self.AC]
         for item in reformatted:
             self.details = tools.combine_dicts(self.details, item)
@@ -48,10 +59,16 @@ class LotFPCharacter(object):
 
     def split_mods(self, attributes):
         """
-        Takes a dictionary of attributes and scores and returns a dictionary of attributes with modifiers only.
-        If no scores have modifiers, returns keys with values set to 0.
+        Takes a dictionary of attributes and scores and returns a dictionary
+        of attributes with modifiers only. If no scores have modifiers,
+        returns keys with values set to 0.
         """
-        dictofmods = {'CHAmod': "0", 'CONmod': "0", 'STRmod': "0", 'DEXmod': "0", 'INTmod': "0", 'WISmod': "0"}
+        dictofmods = {'CHAmod': "0", 
+                        'CONmod': "0", 
+                        'STRmod': "0", 
+                        'DEXmod': "0", 
+                        'INTmod': "0", 
+                        'WISmod': "0"}
         for key in attributes:
             attr_name = key
             value = attributes.get(key)
@@ -63,8 +80,10 @@ class LotFPCharacter(object):
 
     def get_hp(self, details, mods):
         """
-        We're only generating our own hitpoints until the remote generator is fixed to use correct LotFP hitdice.
-        :param details: The details of the character - easily obtained from the JSON remote generator.
+        We're only generating our own hitpoints until the remote generator
+        is fixed to use correct LotFP hitdice.
+        :param details: The details of the character - easily obtained
+        from the JSON remote generator.
         :param mods: The attribute modifiers of the character.
         :return: The number of hit points the character has.
         """
@@ -94,7 +113,8 @@ class LotFPCharacter(object):
 
     def get_saves(self, pcClass, mods):
         """
-        We're only generating our own saves until the remote generator is fixed to return the right LotFP saves.
+        We're only generating our own saves until the remote generator\
+        is fixed to return the right LotFP saves.
 
         :param pcClass: The character class of the character.
         :param mods: The attribute modifiers of the character.
@@ -111,7 +131,8 @@ class LotFPCharacter(object):
         }
         saves = lotfp_saves[pcClass]
 
-        # We're SUBTRACTING the mod from the save because you have to roll over to save. A LOWER save is better.
+        # We're SUBTRACTING the mod from the save because you
+        # have to roll over to save. A LOWER save is better.
         saves['magic'] -= int(mods['INTmod'])
         for save in ['poison', 'wands', 'stone', 'breath']:
             saves[save] -= int(mods['WISmod'])
@@ -120,14 +141,6 @@ class LotFPCharacter(object):
 
     def get_skills(self, skill_list, mods):
         skills = {item[0]: item[1] for item in skill_list}
-        """ Correct for misspelling of Architecture in Dwarf listings (at least until the website's code
-            is updated from Github)
-        if 'Architeure' in skills.keys():
-            skills['Architecture'] = skills['Architeure']
-            del skills['Architeure']
-        # Add character's INT modifier to their language skill chance, at least until that bug is fixed.
-        skills['Languages'] = max(int(skills['Languages']) + int(mods['INTmod']), 0)
-        """
         return skills
 
     def calculate_attack_bonuses(self, mods, pcClass=None):
@@ -141,7 +154,8 @@ class LotFPCharacter(object):
         melee_attack_bonus = int(mods['STRmod']) + base
         ranged_attack_bonus = int(mods['DEXmod']) + base
 
-        attacks = {'MeleeBonus': melee_attack_bonus, 'RangedBonus': ranged_attack_bonus}
+        attacks = {'MeleeBonus': melee_attack_bonus, 
+                    'RangedBonus': ranged_attack_bonus}
 
         return attacks
 
@@ -152,8 +166,9 @@ class LotFPCharacter(object):
         else:
             shield_bonus = 0
 
-        # original_AC already includes DEX modifier and armor worn, but not shield
-        # Surprised AC means no DEX bonus, no shield, and an additional -2
+        # original_AC already includes DEX modifier and armor worn,
+        # but not shield. Surprised AC means no DEX bonus, no shield,
+        # and an additional -2.
         armor_classes['surprised_ac'] = original_ac - int(mods['DEXmod']) - 2
         armor_classes['melee_ac'] = original_ac + shield_bonus
         armor_classes['melee_ac_noshield'] = armor_classes['melee_ac'] - shield_bonus
