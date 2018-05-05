@@ -10,7 +10,8 @@ import os
 import tempfile
 import random
 
-SASS = ["All these guys are gonna die anyway",lament"A 1 is good, right?",
+SASS = ["All these guys are gonna die anyway", 
+        "A 1 is good, right?",
         "HOW many hit points?",
         "No, I'm sure those spells will be useful",
         "Don't get too attached",
