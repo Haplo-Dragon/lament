@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from flask import request, send_file, render_template, flash, url_for, redirect, Flask, Blueprint
+from flask import request, send_file, render_template, flash, url_for, redirect, Blueprint
 
 import character
 import tools
@@ -122,7 +122,6 @@ def lament():
         os.remove(final_name)
 
     subprocess.run([path_to_pdftk, tmpdir.name + '\*.pdf', 'cat', 'output', final_name],
-                   **tools.subprocess_args(False))    
+                   **tools.subprocess_args(False))
 
-    print("Returning %s." % final_name)
     return send_file(final_name, mimetype="application/pdf", as_attachment=True)
