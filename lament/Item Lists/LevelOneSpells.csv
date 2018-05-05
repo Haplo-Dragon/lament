@@ -15,7 +15,7 @@ Magic Missile,Instantaneous,60’ + 10’/level,vs. Magic for half damage (if damage
 Mending,Instantaneous,30’,No,No,Fix small breaks or tears in objects.,The adventuring life and spectacles rarely agree with one another.,116
 Message,Instantaneous,60’ + 10’/level,No,No,Point at someone and speak a whisper only they can hear. Easily hidden.,Great fun at parties.,116
 Read Magic,Instantaneous,0,No,No,"Read 1d4 items with magical inscriptions (spellbooks, scrolls, weapons, etc.)",Think this is too elementary for you? Think mad sorcerers with access to terrible powers from beyond our cosmos don’t trap their books? I thought so.,125
-Shield,2 turns,Touch,No,No,"AC 19 vs. missiles, AC 17 for all other attacks. Take -1 damage from attacks.",Laughing and shouting “Puny mortals!” while arrows bounce harmlessly off you is entirely appropriate behavior.,128
+Shield,2 turns,Touch,No,No,"AC 19 vs. missiles, AC 17 for all other attacks. Take -1 damage from attacks.",Laughing and shouting “Puny mortals!” while arrows bounce harmlessly off you is optional.,128
 Sleep,d4 turns,30’ + 10’/level,No,No,"Put 2d8 HD of creatures with 4+1 HD to sleep. If higher HD, only 1 creature.","I slit many sleeping throats in my adventuring days, apprentice. You get used to the sound they make after a while.",129
 Spider Climb,1 round + 1 round/level,Touch,No,No,Climb walls and ceilings like a spider. Need hands and feet free.,You’d be surprised how often this turns out to be of use.,131
 Summon,Varies,10’,No,No,"Summon a unique, horrifyingly powerful entity. Hope you can control it.",Do not speak of what happened to the academy in the east. Do not speak its name. Do not ask again.,134
