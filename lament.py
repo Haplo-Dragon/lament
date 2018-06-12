@@ -2,8 +2,8 @@
 
 from flask import request, send_file, render_template, flash, url_for, redirect, Blueprint
 
-import lament_mod.character as character
-import lament_mod.tools as tools
+import character
+import tools
 from fdfgen import forge_fdf
 import subprocess
 import os

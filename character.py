@@ -1,4 +1,4 @@
-import lament_mod.tools as tools
+import tools
 import random
 
 
