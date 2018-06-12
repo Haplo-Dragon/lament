@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 import lament
 
 
@@ -11,6 +11,10 @@ def create_app():
 
     # Register blueprints
     app.register_blueprint(lament.lamentApp)
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('lament.index'))
 
     @app.after_request
     def gnu_terry_pratchett(resp):
