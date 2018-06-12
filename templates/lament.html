@@ -1,0 +1,40 @@
+{% extends "lament/base.html" %}
+
+{% block title %} {{sass}} {% endblock %}
+
+{%block content %}
+
+<div id="specific">
+    <h1>Generate a specific class</h1>
+</div>
+
+<div id="classlist">
+    <form id="specific-classes" class="specific" method="POST" action="{{ url_for('lament.lament_pdf') }}">
+        <input type="submit" class="specificclass" name="desired_class" value="Cleric">
+        <input type="submit" class="specificclass" name="desired_class" value="Fighter">
+        <input type="submit" class="specificclass" name="desired_class" value="Magic-User">
+        <input type="submit" class="specificclass" name="desired_class" value="Dwarf">
+        <input type="submit" class="specificclass" name="desired_class" value="Elf">
+        <input type="submit" class="specificclass" name="desired_class" value="Halfling">
+    </form>
+
+</div>
+<h1>Generate random characters</h1>
+<div id="random">
+    <form id="random-classes" class="random" method="POST" action="{{ url_for('lament.lament_pdf') }}">
+        <input type="text" id="randos" name="randos" autofocus="autofocus" placeholder="How many randos?">
+        {% if get_flashed_messages() %}
+            <div class="flash">
+                {% for message in get_flashed_messages() %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <input type="submit" class="random_generate" name="random_characters" value="HOPE FOR THE BEST">
+    </form>
+</div>
+
+<div id="sass">
+    {{sass}}
+</div>
+{% endblock %}

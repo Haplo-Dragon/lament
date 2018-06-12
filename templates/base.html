@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> {% block title %}{% endblock %} - Lament </title>
+
+    <link rel="stylesheet" type="text/css" href="../static/lament.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Crimson+Text|Nixie+One">
+
+    {% block scripts %}        
+    {% endblock %}
+
+</head>
+
+<body>
+<div id="content">
+    {% block content %} {%endblock%}
+</div>
+</body>
+
+<div id="footer">
+    {% include "lament/footer.html" %}
+</div>
+</html>
