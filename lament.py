@@ -97,7 +97,9 @@ def lament_pdf():
         # All of the command-line arguments for PDFtk,
         # since they were getting kinda long.
         args = [path_to_pdftk,
-                '..\LotFPCharacterSheetLastGaspFillable.pdf',
+                os.path.join(
+                    os.path.dirname(__file__),
+                    'LotFPCharacterSheetLastGaspFillable.pdf'),
                 'fill_form',
                 PC.fdf_name,
                 'output',

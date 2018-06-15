@@ -392,8 +392,8 @@ def create_spellsheet_pdf(details, name, filename=None, directory=None):
     if directory is None:
         directory = tempfile.TemporaryDirectory(dir=os.getcwd()).name
 
-    spell_name = name + ' Spells.pdf'
-    spell_fdf_name = name + ' Spells.fdf'
+    spell_name = name + '_Spells.pdf'
+    spell_fdf_name = name + '_Spells.fdf'
 
     fdf_spell_data = forge_fdf("", spell_list, [], [], [])
     with open(os.path.join(directory, spell_fdf_name), 'wb') as f:
@@ -402,7 +402,7 @@ def create_spellsheet_pdf(details, name, filename=None, directory=None):
     path_to_pdftk = get_pdftk_path()
 
     args = [path_to_pdftk,
-            '..\LotFPSpellSheetFillable.pdf',
+            os.path.join(os.path.dirname(__file__), 'LotFPSpellSheetFillable.pdf'),
             'fill_form',
             spell_fdf_name,
             'output',
