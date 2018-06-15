@@ -5,8 +5,10 @@ from flask import request, send_file, render_template, flash, url_for, redirect,
 import character
 import tools
 from fdfgen import forge_fdf
+from PyPDF2 import PdfFileMerger, PdfFileReader
 import subprocess
 import os
+import glob
 import tempfile
 import random
 
@@ -123,12 +125,13 @@ def lament_pdf():
     if os.path.exists(final_name):
         os.remove(final_name)
 
-    subprocess.run([path_to_pdftk,
-                    os.path.join(tmpdir.name, '*.pdf'),
-                    'cat',
-                    'output',
-                    final_name],
-                   **tools.subprocess_args(False))
+    merger = PdfFileMerger()
+    PDFs_to_be_merged = glob.glob(os.path.join(tmpdir.name, '*.pdf'))
+
+    for PDF in PDFs_to_be_merged:
+        merger.append(PdfFileReader(open(PDF, 'rb')))
+
+    merger.write(final_name)
 
     return send_file(final_name,
                      mimetype="application/pdf",

@@ -1,5 +1,5 @@
 import pytest
-from lament_mod import tools
+import tools
 
 
 @pytest.mark.parametrize("equip_list, equip_type", [
