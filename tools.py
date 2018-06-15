@@ -352,7 +352,7 @@ def get_item_details(original_item_list, item_type, filename=None):
     if filename is None:
         filename = item_types[item_type]
 
-    with open(filename) as csvfile:
+    with open(filename, encoding='utf8', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             if row[item_type] in original_item_list:
@@ -372,7 +372,7 @@ def create_spell_list(original_spell_list, pcClass):
     return spell_list
 
 
-def create_spellsheet_pdf(details, name, filename=None, directory=None):
+def create_spellsheet_pdf(details, PC_name, filename=None, directory=None):
     """Get spell list for character, fill spell sheet PDF with spell information."""
     spell_list = create_spell_list(details['spell'], details['class'])
     spell_details = get_item_details(spell_list, 'Spell', filename=None)
@@ -392,8 +392,8 @@ def create_spellsheet_pdf(details, name, filename=None, directory=None):
     if directory is None:
         directory = tempfile.TemporaryDirectory(dir=os.getcwd()).name
 
-    spell_name = name + '_Spells.pdf'
-    spell_fdf_name = name + '_Spells.fdf'
+    spell_name = PC_name + '_Spells.pdf'
+    spell_fdf_name = PC_name + '_Spells.fdf'
 
     fdf_spell_data = forge_fdf("", spell_list, [], [], [])
     with open(os.path.join(directory, spell_fdf_name), 'wb') as f:

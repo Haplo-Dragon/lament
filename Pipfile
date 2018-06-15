@@ -9,7 +9,10 @@ name = "pypi"
 
 flask = "*"
 requests = "*"
+"pypdf2" = "*"
 
 
 [dev-packages]
 
+pytest = "*"
+pytest-cov = "*"
