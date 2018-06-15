@@ -1,7 +1,7 @@
 # lament
 Uses the excellent random OSR character generator at http://character.totalpartykill.ca/lotfp to fill PDF character sheets with random characters.
 
-Lament is now available as a [webapp!](http://lament.strangled.net:42000)
+Lament is now available as a [webapp!](https://protected-chamber-48125.herokuapp.com/character)
 
 ***
 Intended for *Lamentations of the Flame Princess* - https://www.lotfp.com
