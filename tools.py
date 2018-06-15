@@ -352,7 +352,7 @@ def get_item_details(original_item_list, item_type, filename=None):
     if filename is None:
         filename = item_types[item_type]
 
-    with open(filename) as csvfile:
+    with open(filename, encoding='utf8', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             if row[item_type] in original_item_list:
