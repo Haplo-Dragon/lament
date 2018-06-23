@@ -1,4 +1,0 @@
-{
-  "tests/test_lotFPCharacter.py::TestLotFPCharacter::()::test_creation": true,
-  "tests/test_lotFPCharacter.py::TestLotFPCharacter::()::test_saves": true
-}
