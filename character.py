@@ -48,6 +48,10 @@ class LotFPCharacter(object):
         # If it's zero, we'll just leave it blank.
         self.mods = tools.clear_mod_zeroes(self.mods)
 
+        # We'll add the character's alignment to the details dictionary.
+        if self.alignment is not None:
+            self.details['alignment'] = self.alignment
+
         # We've gotta replace the removed character detail entries
         # with our nice reformatted ones.
         reformatted = [
