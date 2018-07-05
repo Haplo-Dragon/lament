@@ -8,11 +8,16 @@ name = "pypi"
 [packages]
 
 flask = "*"
+gunicorn = "*"
+flask-scss = "*"
 requests = "*"
+fdfgen = "*"
 "pypdf2" = "*"
+numpy = "*"
 
 
 [dev-packages]
 
 pytest = "*"
 pytest-cov = "*"
+pytest-mock = "*"

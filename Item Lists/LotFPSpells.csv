@@ -1,0 +1,41 @@
+Spell,Duration,Range,Save,Reversible,Effect,Flavor,Page
+Bookspeak,1 round/level,Touch,No,No,Ask questions of a book - it answers from the knowledge in its pages.,Ask the book what you will - it will answer in turn.,92
+Charm Person,Until abuse or neglect,120’,vs. Magic (+5 for murderous violence),No,Make someone do what you want,"They will do as you say, but beware – there are some things even sorcery cannot make a man do.",93
+Comprehend Languages,1 turn/level,0,No,Yes,"Understand all languages, but not speak or write them.",The spirits of the dead speak all languages. Hark! Do you hear their whispers?,95
+Detect Magic,Instantaneous,Line of sight,No,No,Detect magic from things on your person and things you can see.,"Learn to tell sorcery from fakery at a glance, or risk destruction.",100
+Enlarge,1 turn/level,5’/level,vs. Magic if unwilling,Yes,"+20% size (and damage)/level for living things, +10% size/level for non-living things","Size is a limitation of your fragile mind, not the universe.",102
+Faerie Fire,2 rounds/level,40’ radius,No,No,"Light up 1 human-sized creature/level, +2 to hit them. Visible at 80’ in darkness",Bathe your foes in unearthly light...so the musclebound dimwits can finally spill their guts.,103
+Feather Fall,Until landing,10’/level,No,No,"Fall safely and slowly, 200 lbs + 200 lbs/level","Don’t fall, you fool! My servants are still mopping up the LAST apprentice.",104
+Floating Disc,6 turns,20’,No,No,"Carries 500 lbs / 2 gallons. 3 foot disc, stays 3 feet off ground at all times.",ANIMALS carry things. Sorcerers need their hands free for more vital pursuits.,105
+Hold Portal,2d6 turns,10’,No,No,Magically shut door as if it were securely closed and locked.,"Never forget this one. Trust me. Villagers with pitchforks. Pitchforks, I tell you!",109
+Identify,Instantaneous,Touch,No,No,Reveal one magical property of an item. Requires laboratory worth 1000 sp.,"Sure, swing it around, see what happens. Just let me move behind this lead wall…",110
+Light,3 turns/level,120’,vs. Magic if unwilling,Yes,Create torch-like light on area/object. Blind creature if cast on eyes.,"Gibbering things peer in on the universe from the outer darkness. Wizards make light, and peer back. And take notes.",113
+Magic Aura,Permanent,Touch,vs. Magic if object handled,Yes,Make object detect as magical,Ha! They’re still searching for hostile enchantments? We hid that tiny piece of thread in the staff room weeks ago!,114
+Magic Missile,Instantaneous,60’ + 10’/level,vs. Magic for half damage (if damage split),No,"1d4 damage/level, auto-hit projectile. At 2nd level, split damage between targets.","Word is, some wizard named Morgan once managed to hit himself with this. Himself. Really. With a mystically guided, unerring projectile.",115
+Mending,Instantaneous,30’,No,No,Fix small breaks or tears in objects.,The adventuring life and spectacles rarely agree with one another.,116
+Message,Instantaneous,60’ + 10’/level,No,No,Point at someone and speak a whisper only they can hear. Easily hidden.,Great fun at parties.,116
+Read Magic,Instantaneous,0,No,No,"Read 1d4 items with magical inscriptions (spellbooks, scrolls, weapons, etc.)",Think this is too elementary for you? Think mad sorcerers with access to terrible powers from beyond our cosmos don’t trap their books? I thought so.,125
+Shield,2 turns,Touch,No,No,"AC 19 vs. missiles, AC 17 for all other attacks. Take -1 damage from attacks.",Laughing and shouting “Puny mortals!” while arrows bounce harmlessly off you is optional.,128
+Sleep,d4 turns,30’ + 10’/level,No,No,"Put 2d8 HD of creatures with 4+1 HD to sleep. If higher HD, only 1 creature.","I slit many sleeping throats in my adventuring days, apprentice. You get used to the sound they make after a while.",129
+Spider Climb,1 round + 1 round/level,Touch,No,No,Climb walls and ceilings like a spider. Need hands and feet free.,You’d be surprised how often this turns out to be of use.,131
+Summon,Varies,10’,No,No,"Summon a unique, horrifyingly powerful entity. Hope you can control it.",Do not speak of what happened to the academy in the east. Do not speak its name. Do not ask again.,134
+Unseen Servant,6 turns + 1 turn/level,0,No,No,Summon an invisible thing to do simple tasks. Lift 20 lbs/ Drag 40 lbs. Can’t attack.,"I lifted its invisibility once. Once. Ask me what it was like, and I’ll tell you. And then you’ll regret it.",148
+One clerical spell a day,,,,,Any level one cleric spell.,,85
+Bless,Instantaneous,Touch,No,No,Give 1d6 + level points to spend on rolls (except damage). Doesn’t work on elves.,,92
+Command,1 round,10’,vs. Magic if HD > 5 or INT > 12,No,Give a single word command; they obey. Doesn’t work on undead.,,95
+Cure Light Wounds,Instantaneous,Touch,No,Yes,"Restore 1d6 + caster level HP, or remove one negative temporary condition.",,98
+Detect Evil,Instantaneous,Line of sight,No,Yes,Detect evil (Chaos) from things on your person and things you can see.,,99
+Invisibility to Undead,1 turn/level,Touch,No,Yes,"Undead cannot see, hear, or smell you unless you intentionally gain their attention.",,112
+Protection from Evil,1 round/level,Touch,No,Yes,"Add caster level to AC and saves vs. Chaotic creatures, grants save vs. any non-cleric spell.",,123
+Purify Food & Drink,Instantaneous,30’,No,Yes,Purify food and water for up to a dozen people.,,125
+Remove Fear,1 round/level,Touch,No,Yes,"Grant save vs. Magic against magical fear, with +1/caster level. Succeed at all morale checks.",,126
+Sanctuary,2 rounds/level,Touch,No,No,All attackers must save vs. Magic to attack you. Ends if you act violently.,,127
+Turn Undead,1d4 + 2 turns,120’,No,No,Force undead to flee – they cannot come within 10’ of you. Ends if you attack them.,,146
+Augury,Instantaneous,0,No,No,See 3 turns into the future to determine whether a particular action will be good or bad for you,,91
+Delay Poison,Instantaneous,Touch,No,No,Grant new save vs. Poison to character who has succumbed to poison in last 24 hours,,99
+Enthrall,"Until attack, distraction, or stop speaking",100’,vs. Magic,No,Compel a crowd to action,,103
+Heat Metal,7 rounds,40’,No,No,"Cause one opponent’s metal arms and armor to heat up (yours heat up, too)",,108
+Heroism,1 round/level,Touch,No,No,"Grant subject 1d4 levels worth of HP, saving throws, and attack bonuses",,108
+Resist Cold,1 turn/level,Touch,No,No,"Be unharmed by non-magical cold, +2 to save vs. magical cold, -1 dmg/die from cold attacks",,126
+Resist Fire,1 turn/level,Touch,No,No,"Be unharmed by non-magical heat, +3 to save vs. magical heat, -1 dmg/die from heat attacks",,126
+Silence 15' Radius,2 rounds/level,120’,vs. Magic if unwilling,No,Complete silence in 30’ diameter. Noise from outside area can be heard within it.,,129

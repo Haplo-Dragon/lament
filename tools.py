@@ -1,10 +1,8 @@
 #!/usr/bin/python
 
 import csv
-from fdfgen import forge_fdf
 import subprocess
 import requests
-import tempfile
 import os
 import platform
 
@@ -32,15 +30,6 @@ WEAPON_STATS = os.path.join(
     os.path.dirname(__file__),
     "Item Lists",
     "WeaponStats.csv")
-
-CLERIC_SPELLS = [
-    'Bless', 'Command', 'Cure Light Wounds', 'Detect Evil',
-    'Invisibility to Undead', 'Protection from Evil',
-    'Purify Food & Drink', 'Remove Fear', 'Sanctuary', 'Turn Undead']
-
-SPELL_FIELDS = [
-    'Spell', 'Duration', 'Range', 'Save',
-    'Reversible', 'Effect', 'Flavor', 'Page']
 
 WEAPON_FIELDS = ['Weapon', 'Damage', 'Short', 'Medium', 'Long', 'Ammo']
 
@@ -250,6 +239,7 @@ def split_money(target):
         if (cp_index is not -1) and (sp_index is not -1):
             money['cp'] = item[item.find(' Cp') - 2:]
             money['sp'] = item[:item.find(' sp') + 3]
+            target.remove(item)
         elif cp_index is not -1:
             money['cp'] = item[cp_index - 1]
             target.remove(item)
@@ -268,10 +258,15 @@ def get_encumbrance(normal_items, oversized_items, pc_class):
     encumbrance = int(len(normal_items) / 5.1)
 
     # Check for chain or plate armor that would add extra encumbrance
-    if 'Chain Armor' in normal_items.values():
-        encumbrance += 1
-    if 'Plate Armor' in normal_items.values():
-        encumbrance += 2
+    for item in normal_items.values():
+        if 'Chain Armor'.casefold() in item.casefold():
+            encumbrance += 1
+        if 'Plate Armor'.casefold() in item.casefold():
+            encumbrance += 2
+    # if 'Chain Armor' in normal_items.values():
+    #     encumbrance += 1
+    # if 'Plate Armor' in normal_items.values():
+    #     encumbrance += 2
 
     # Check for oversized items (shields, polearms, etc.).
     # Each oversized item adds an encumbrance point.
@@ -331,17 +326,6 @@ def clear_mod_zeroes(modsdict):
     return modsdict
 
 
-def add_class_based_spells(spell_list, pc_class):
-    """Add class-specific spells to the spell list."""
-    if pc_class == 'Magic-User':
-        spell_list.append('Summon')
-    if pc_class == 'Cleric':
-        spell_list = CLERIC_SPELLS
-    if pc_class == 'Elf':
-        spell_list = ['Read Magic']
-    return spell_list
-
-
 def get_item_details(original_item_list, item_type, filename=None):
     """Create a list of dictionaries containing item names, details, and flavor
     text for original_item_list, drawn from the file specified or from the default
@@ -361,53 +345,13 @@ def get_item_details(original_item_list, item_type, filename=None):
     return item_details
 
 
-def create_spell_list(original_spell_list, pcClass):
-    """Create a full list of spells, including class-specific spells."""
-    spell_list = add_class_based_spells(original_spell_list, pcClass)
+def is_special_case_for_saves(pcClass, level):
+    """Determine if the character's saves must be calculated by special case.
 
-    # Correct for spelling error in Magic Missile
-    if 'Magic Missle' in spell_list:
-        spell_list.remove('Magic Missle')
-        spell_list.append('Magic Missile')
-    return spell_list
-
-
-def create_spellsheet_pdf(details, PC_name, filename=None, directory=None):
-    """Get spell list for character, fill spell sheet PDF with spell information."""
-    spell_list = create_spell_list(details['spell'], details['class'])
-    spell_details = get_item_details(spell_list, 'Spell', filename=None)
-
-    i = 0
-    for item in spell_details:
-        for name in SPELL_FIELDS:
-            prefix = name + str(i)
-            item[prefix] = item[name]
-            del item[name]
-        i += 1
-
-    spell_list = add_PDF_field_names(spell_list, 'Spell')
-    for item in spell_details:
-        spell_list = {**spell_list, **item}
-
-    if directory is None:
-        directory = tempfile.TemporaryDirectory(dir=os.getcwd()).name
-
-    spell_name = PC_name + '_Spells.pdf'
-    spell_fdf_name = PC_name + '_Spells.fdf'
-
-    fdf_spell_data = forge_fdf("", spell_list, [], [], [])
-    with open(os.path.join(directory, spell_fdf_name), 'wb') as f:
-        f.write(fdf_spell_data)
-
-    path_to_pdftk = get_pdftk_path()
-
-    args = [path_to_pdftk,
-            os.path.join(os.path.dirname(__file__), 'LotFPSpellSheetFillable.pdf'),
-            'fill_form',
-            spell_fdf_name,
-            'output',
-            spell_name,
-            'flatten']
-
-    # Fill the spell form with PDFtk, store them in the tempfiles directory.
-    subprocess.run(args, cwd=directory, **subprocess_args(False))
+    Magic-User saves are special case at level 19+, Dwarf saves are special
+    case at level 12+, and Elf saves are special case at level 16+.
+    """
+    return (pcClass.casefold() in "Magic-User".casefold() and level >= 19) or\
+           (pcClass.casefold() in "Dwarf".casefold() and level >= 12) or\
+           (pcClass.casefold() in "Elf".casefold() and level >= 17) or\
+           (pcClass.casefold() in "Halfling".casefold())
