@@ -2,9 +2,9 @@
 
 from flask import request, send_file, render_template, flash, url_for, redirect, Blueprint
 
-import lament_mod.character as character
-import lament_mod.tools as tools
-import lament_mod.spells as spells
+import character
+import tools
+import spells
 from fdfgen import forge_fdf
 from PyPDF2 import PdfFileMerger, PdfFileReader
 import subprocess

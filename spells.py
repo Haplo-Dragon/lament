@@ -5,7 +5,7 @@ import os
 import subprocess
 import tempfile
 from fdfgen import forge_fdf
-import lament_mod.tools as tools
+import tools
 
 CLERIC_SPELLS = [
     'Bless', 'Command', 'Cure Light Wounds', 'Detect Evil',

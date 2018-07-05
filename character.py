@@ -1,7 +1,7 @@
 import random
 import math
 import numpy as np
-import lament_mod.tools as tools
+import tools
 
 
 NON_HUMANS = ["Dwarf".casefold(), "Elf".casefold(), "Halfling".casefold()]
