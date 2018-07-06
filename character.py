@@ -114,33 +114,30 @@ class LotFPCharacter(object):
                  calculate_encumbrance=True,
                  counter=1):
         self.details = tools.fetch_character(desired_class)
-        self.counter = counter
         self.pcClass = self.details['class']
         self.level = desired_level
+        self.calculate_encumbrance = calculate_encumbrance
+        self.counter = counter
 
         self.name = '_'.join([str(self.counter + 1), self.pcClass])
         self.fdf_name = self.name + '.fdf'
         self.filled_name = self.name + '_Filled.pdf'
 
-        self.alignment = self.align(self.pcClass)
+        self.alignment = self.align()
         self.attributes = {item[0]: item[1] for item in self.details['attributes']}
-        self.mods = self.split_mods(self.details['attr'])
-        self.hp = self.get_hp(self.pcClass, self.mods, self.level)
-        self.saves = self.get_saves(self.pcClass, self.level, self.mods)
+        self.mods = self.split_mods()
+        self.hp = self.get_hp(self.level)
+        self.saves = self.get_saves()
         self.skills = {item[0]: item[1] for item in self.details['skills']}
         if self.pcClass.casefold() in NON_HUMANS and self.level > 1:
-            self.skills = self.get_nonhuman_skills(self.pcClass, self.skills, self.level)
+            self.get_nonhuman_skills()
         self.skill_points = 2 * (self.level - 1) if self.pcClass == "Specialist" else None
 
-        self.calculate_encumbrance = calculate_encumbrance
         self.equipment = tools.format_equipment_list(
             self.details,
             self.calculate_encumbrance)
-        self.attacks = self.calculate_attack_bonuses(self.mods, self.level, self.pcClass)
-        self.AC = self.calculate_armor_classes(
-            self.mods,
-            self.equipment,
-            self.details['ac'])
+        self.attacks = self.calculate_attack_bonuses()
+        self.AC = self.calculate_armor_classes()
 
         # Lots of the entries in the original character details have
         # been reformatted, so we'll remove them.
@@ -178,16 +175,16 @@ class LotFPCharacter(object):
         for item in reformatted:
             self.details = {**self.details, **item}
 
-    def align(self, pcClass=None):
+    def align(self):
         alignment = None
-        if pcClass.casefold() == 'Cleric'.casefold():
+        if self.pcClass.casefold() == 'Cleric'.casefold():
             alignment = 'Lawful'
-        if pcClass.casefold() in ('Magic-User'.casefold(), 'Elf'.casefold()):
+        if self.pcClass.casefold() in ('Magic-User'.casefold(), 'Elf'.casefold()):
             alignment = 'Chaotic'
 
         return alignment
 
-    def split_mods(self, attributes):
+    def split_mods(self):
         """
         Takes a dictionary of attributes and scores and returns a dictionary
         of attributes with modifiers only. If no scores have modifiers,
@@ -199,42 +196,42 @@ class LotFPCharacter(object):
                       'DEXmod': "0",
                       'INTmod': "0",
                       'WISmod': "0"}
-        for key in attributes:
+        for key in self.details['attr']:
             attr_name = key
-            value = attributes.get(key)
+            value = self.details['attr'].get(key)
             modifier = value[value.find("(") + 1:value.find(")")]
             if '+' in modifier or '-' in modifier:
                 dictofmods[attr_name + 'mod'] = modifier
 
         return dictofmods
 
-    def get_hp(self, pcClass, mods, level, hp=0):
+    def get_hp(self, level, hp=0):
         """
         We're only generating our own hitpoints until the remote generator
         is fixed to use correct LotFP hitdice.
-        :param pcClass: The character class of the character.
-        :param mods: The attribute modifiers of the character.
         :param level: The desired level of the character.
         :param hp: The current hit points of the character (defaults to 0).
         :return: The number of hit points the character has.
         """
-        hit_die = HIT_DICE[pcClass]
-        hit_bonus = HIT_BONUSES[pcClass]
+        hit_die = HIT_DICE[self.pcClass]
+        hit_bonus = HIT_BONUSES[self.pcClass]
 
         if level < 10:
             # Roll hitdice for all levels other than level 1...
             # Assuming the minimum you can gain is 1 HP, although it isn't explicitly
             # stated in the rulebook.
             for i in range(level - 1):
-                hp += max(random.randint(1, hit_die) + int(mods['CONmod']), 1)
+                hp += max(random.randint(1, hit_die) + int(self.mods['CONmod']), 1)
 
             # ...account for the irritating fact that Magic-Users (and ONLY Magic-Users)
             # have a d6 hit die at first level and a d4 at 2nd level and up...
-            if pcClass.casefold() in "Magic-User".casefold():
+            if self.pcClass.casefold() in "Magic-User".casefold():
                 hit_die = 6
             # ...then add the final roll for level 1 or the minimum HP for the class,
             # whichever is higher.
-            hp += max(random.randint(1, hit_die) + int(mods['CONmod']), MIN_HP[pcClass])
+            hp += max(
+                random.randint(1, hit_die) + int(self.mods['CONmod']),
+                MIN_HP[self.pcClass])
 
             return hp
 
@@ -243,13 +240,13 @@ class LotFPCharacter(object):
             hp += hit_bonus * (level - 9)
 
             # Dwarves keep adding their CON bonus even after level 10. No one else does.
-            if pcClass.casefold() in "Dwarf".casefold():
-                hp += int(mods['CONmod']) * (level - 9)
+            if self.pcClass.casefold() in "Dwarf".casefold():
+                hp += int(self.mods['CONmod']) * (level - 9)
 
             # Recursively call this function for all the levels from 9 down
-            return self.get_hp(pcClass, mods, 9, hp)
+            return self.get_hp(9, hp)
 
-    def get_saves(self, pcClass, level, mods):
+    def get_saves(self):
         """
         Calculate save values for a given character class and level.
 
@@ -258,17 +255,18 @@ class LotFPCharacter(object):
         :param mods: The attribute modifiers of the character.
         :return: A dictionary of saves in the form 'poison': 12.
         """
-        interval = SAVE_CHANGE_INTERVALS[pcClass]
+        interval = SAVE_CHANGE_INTERVALS[self.pcClass]
+        effective_level = self.level
 
         # Levels 19+ are special cases for Magic-Users, 12+ are special cases
         # for Dwarves, 17+ are special cases for Elves, and Halflings are a
         # PAIN IN THE ASS. Halflings change immediately at level 2 and then every two
         # levels thereafter.
-        if tools.is_special_case_for_saves(pcClass, level):
-            if pcClass.casefold() == "Halfling".casefold():
-                level += 1
+        if tools.is_special_case_for_saves(self.pcClass, effective_level):
+            if self.pcClass.casefold() == "Halfling".casefold():
+                effective_level += 1
             else:
-                level += interval
+                effective_level += interval
 
         # We're summing the appropriate rows of the array to get the new save values.
         # Since save changes mostly occur at a consistent interval (i.e., every
@@ -276,58 +274,67 @@ class LotFPCharacter(object):
         # summed by dividing level by interval and rounding. So we're slicing the
         # array (array[:NUMBER_OF_ROWS]), and then summing the rows of that slice
         # (.sum(0), the zero means sum across the row axis).
-        end_row = math.ceil(level / interval)
-        changes_to_saves = LOTFP_SAVES[pcClass][:end_row].sum(0)
+        end_row = math.ceil(effective_level / interval)
+        changes_to_saves = LOTFP_SAVES[self.pcClass][:end_row].sum(0)
         saves = dict(zip(SAVE_NAMES, changes_to_saves.flat))
 
         # We're SUBTRACTING the mod from the save because you
         # have to roll over to save. A LOWER save is better.
-        saves['magic'] -= int(mods['INTmod'])
+        saves['magic'] -= int(self.mods['INTmod'])
         for save in ['poison', 'wands', 'stone', 'breath']:
-            saves[save] -= int(mods['WISmod'])
+            saves[save] -= int(self.mods['WISmod'])
 
         return saves
 
-    def get_nonhuman_skills(self, pcClass, skills, level):
-        if pcClass.casefold() == "Dwarf".casefold() and "Architecture" in skills:
-            skills['Architecture'] = min(2 + math.ceil(level / 3), 6)
-        if pcClass.casefold() == "Elf".casefold() and "Search" in skills:
-            skills['Search'] = min(1 + math.ceil(level / 3), 6)
-        if pcClass.casefold() == "Halfling".casefold() and "Bushcraft" in skills:
-            skills['Bushcraft'] = min(2 + math.ceil(level / 3), 6)
+    def get_nonhuman_skills(self):
+        if self.pcClass.casefold() == "Dwarf".casefold() and "Architecture" in self.skills:
+            self.skills['Architecture'] = min(2 + math.ceil(self.level / 3), 6)
+        if self.pcClass.casefold() == "Elf".casefold() and "Search" in self.skills:
+            self.skills['Search'] = min(1 + math.ceil(self.level / 3), 6)
+        if self.pcClass.casefold() == "Halfling".casefold() and "Bushcraft" in self.skills:
+            self.skills['Bushcraft'] = min(2 + math.ceil(self.level / 3), 6)
+        return
 
-        return skills
-
-    def calculate_attack_bonuses(self, mods, level, pcClass=None):
-        if pcClass.casefold() == 'Fighter'.casefold():
-            base = min(2 + (level - 1), 10)
+    def calculate_attack_bonuses(self):
+        if self.pcClass.casefold() == 'Fighter'.casefold():
+            base = min(2 + (self.level - 1), 10)
         else:
             base = 1
 
         melee_attack_bonus, ranged_attack_bonus = base, base
 
-        melee_attack_bonus = int(mods['STRmod']) + base
-        ranged_attack_bonus = int(mods['DEXmod']) + base
+        melee_attack_bonus = int(self.mods['STRmod']) + base
+        ranged_attack_bonus = int(self.mods['DEXmod']) + base
 
         attacks = {'MeleeBonus': melee_attack_bonus,
                    'RangedBonus': ranged_attack_bonus}
 
         return attacks
 
-    def calculate_armor_classes(self, mods, equipment, original_ac=12):
+    def calculate_armor_classes(self):
         armor_classes = {}
-        if 'Shield' in equipment.values() or 'Shield ' in equipment.values():
+
+        # Shields add +1 to AC in melee combat and +2 to AC in ranged combat. We're
+        # setting the shield bonus to +1 if a shield is present to make it easier to
+        # add and subtract from different AC values.
+        if 'Shield' in self.equipment.values() or 'Shield ' in self.equipment.values():
             shield_bonus = 1
         else:
             shield_bonus = 0
 
-        # original_AC already includes DEX modifier and armor worn,
-        # but not shield. Surprised AC means no DEX bonus, no shield,
-        # and an additional -2.
-        armor_classes['surprised_ac'] = original_ac - int(mods['DEXmod']) - 2
-        armor_classes['melee_ac'] = original_ac + shield_bonus
+        # self.details['ac'] already includes DEX modifier, armor worn, and +1 for
+        # shield (shields add +1 for melee and +2 for ranged). Surprised AC means
+        # no DEX bonus (for good or ill), no shield bonus, and an additional -2.
+        armor_classes['surprised_ac'] = self.details['ac'] - int(self.mods['DEXmod']) - shield_bonus - 2
+        armor_classes['melee_ac'] = self.details['ac']
+
+        # We're subtracting the +1 melee AC bonus for the shield, if present.
         armor_classes['melee_ac_noshield'] = armor_classes['melee_ac'] - shield_bonus
-        armor_classes['ranged_ac'] = original_ac + (2 * shield_bonus)
+
+        # Since self.details['ac'] ALREADY includes a +1 for the shield (if present), we
+        # only need to add 1 to reach the required +2 ranged AC bonus for having
+        # a shield.
+        armor_classes['ranged_ac'] = self.details['ac'] + shield_bonus
         armor_classes['ranged_ac_noshield'] = armor_classes['ranged_ac'] - (2 * shield_bonus)
 
         return armor_classes
